@@ -11,7 +11,7 @@ module "vpc_vm" {
   instance_type      = var.instance_type
   ssh_public_key_path = var.ssh_public_key_path
 
-   enable_ssm_access = true
+  #  enable_ssm_access = true
   additional_public_instance_policies = [
     "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
   ]
