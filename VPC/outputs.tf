@@ -3,16 +3,29 @@ output "vpc_id" {
   value       = aws_vpc.main.id
 }
 
-output "public_subnet_id" {
-  description = "ID of the public subnet"
-  value       = aws_subnet.public[count.index]
+# All public subnets as a list
+output "public_subnet_ids" {
+  description = "IDs of all public subnets"
+  value       = aws_subnet.public[*].id
 }
 
-output "private_subnet_id" {
-  description = "ID of the private subnet"
-  value       = aws_subnet.public[count.index]
+# All private subnets as a list
+output "private_subnet_ids" {
+  description = "IDs of all private subnets"
+  value       = aws_subnet.private[*].id
 }
 
+# Specific important subnets
+output "first_public_subnet_id" {
+  description = "ID of the first public subnet"
+  value       = aws_subnet.public[0].id
+}
+
+# ALB needs at least 2 subnets, so we can output them specifically
+output "alb_subnet_ids" {
+  description = "Subnet IDs suitable for ALBs"
+  value       = slice(aws_subnet.public[*].id, 0, 2)
+}
 output "public_instance_public_ip" {
   description = "Public IP address of the public instance"
   value       = aws_instance.public.public_ip
