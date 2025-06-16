@@ -68,21 +68,3 @@ variable "additional_private_instance_policies" {
   type        = list(string)
   default     = []
 }
-
-variable "enable_ssm_access" {
-  description = "Whether to enable SSM access for instances"
-  type        = bool
-  default     = false
-}
-
-variable "additional_public_instance_policies" {
-  description = "Additional policy ARNs for public instances"
-  type        = list(string)
-  default     = []
-}
-
-variable "additional_private_instance_policies" {
-  description = "Additional policy ARNs for private instances"
-  type        = list(string)
-  default     = []
-}
