@@ -25,7 +25,7 @@ This repository contains a Terraform module that creates a complete AWS infrastr
     variables.tf            # Module input variables
     outputs.tf              
     README.md               
-    vpc.tfvars
+    terraform.tfvars.module
     environments/
         Dev/
             main.tf             # Dev environment configuration
@@ -70,7 +70,7 @@ This repository contains a Terraform module that creates a complete AWS infrastr
 
 
 git clone https://github.com/your-username/HJH_Assessment.git
-   cd HJH/AWS_VPC_module
+   cd HJH_Assessment/VPC
 
 ### 2. Initialize Terraform
 
@@ -80,7 +80,7 @@ terraform init
 
 ### 3. Review and customize variables
 
-Edit the `environment/Dev/Dev.tfvars` file to match your requirements:
+Edit the `environment/Dev/terraform.tfvars` file to match your requirements:
 
 
 ### 4. Plan and apply
