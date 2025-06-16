@@ -20,19 +20,19 @@ This repository contains a Terraform module that creates a complete AWS infrastr
 ## Module Structure
 
 
-aws-vpc-module/
+    VPC/
     main.tf                 # Main module configuration
     variables.tf            # Module input variables
-    outputs.tf              # Module outputs
-    README.md               # This documentation
-    role.tf
+    outputs.tf              
+    README.md               
+    vpc.tfvars
     environments/
         Dev/
             main.tf             # Dev environment configuration
             terraform.tfvars    # Dev environment variables
+            variables.tf
             
-        Stage/
-        Prod/
+        
 
 
 
@@ -69,7 +69,7 @@ aws-vpc-module/
 ### 1. Clone the repository
 
 
-git clone https://github.com/your-username/HJH.git
+git clone https://github.com/your-username/HJH_Assessment.git
    cd HJH/AWS_VPC_module
 
 ### 2. Initialize Terraform
@@ -80,16 +80,7 @@ terraform init
 
 ### 3. Review and customize variables
 
-Edit the `environment/Dev/terraform.tfvars` file to match your requirements:
-
-
-environment = "dev"
-vpc_cidr = "10.0.0.0/16"
-public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
-private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
-instance_type = "t2.micro"
-ssh_public_key_path = "~/.ssh/id_rsa.pub"
-region = "us-east-1"
+Edit the `environment/Dev/Dev.tfvars` file to match your requirements:
 
 
 ### 4. Plan and apply
