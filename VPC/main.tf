@@ -45,7 +45,7 @@ resource "aws_route_table" "public" {
 
 # Associate Public Subnet with Route Table
 resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+  subnet_id      = aws_subnet.public[count.index]
   route_table_id = aws_route_table.public.id
 }
 
@@ -147,7 +147,7 @@ resource "aws_security_group" "private_instance" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    cidr_blocks     = [var.public_subnet_cidr]
+    cidr_blocks     = [var.public_subnet_cidrs]
   }
 
   egress {
