@@ -156,10 +156,25 @@ resource "aws_key_pair" "main" {
   key_name   = "${var.environment}-key"
   public_key = file(var.ssh_public_key_path)
 }
+# Data source to get the latest Amazon Linux 2 AMI
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
 
 # Create Public EC2 Instance
 resource "aws_instance" "public" {
-  ami                         = var.ami_id
+  ami                         = data.aws_ami.amazon_linux.id
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.public_instance.id]
@@ -183,7 +198,7 @@ resource "aws_instance" "public" {
 
 # Create Private EC2 Instance
 resource "aws_instance" "private" {
-  ami                    = var.ami_id
+  ami                    = data.aws_ami.amazon_linux.id
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.private.id
   vpc_security_group_ids = [aws_security_group.private_instance.id]
@@ -365,39 +380,3 @@ data "aws_iam_policy_document" "basic_cloudwatch" {
   }
 }
 
-# # Attach SSM Policy for both instances (for management)
-# resource "aws_iam_role_policy_attachment_public" "public_ssm" {
-#   role       = aws_iam_role.ec2_public_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-# }
-
-# resource "aws_iam_role_policy_attachment_private" "private_ssm" {
-#   role       = aws_iam_role.ec2_private_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-# }
-
-# # Conditional SSM Policy Attachment
-# resource "aws_iam_role_policy_attachment_ssm_public" "public_ssm" {
-#   count      = var.enable_ssm_access ? 1 : 0
-#   role       = aws_iam_role.ec2_public_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-# }
-
-# resource "aws_iam_role_policy_attachment_ssm_private" "private_ssm" {
-#   count      = var.enable_ssm_access ? 1 : 0
-#   role       = aws_iam_role.ec2_private_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-# }
-
-# # Additional Policies Attachment
-# resource "aws_iam_role_policy_attachment_public_additional" "public_additional" {
-#   for_each   = toset(var.additional_public_instance_policies)
-#   role       = aws_iam_role.ec2_public_role.name
-#   policy_arn = each.value
-# }
-
-# resource "aws_iam_role_policy_attachment_private_additional" "private_additional" {
-#   for_each   = toset(var.additional_private_instance_policies)
-#   role       = aws_iam_role.ec2_private_role.name
-#   policy_arn = each.value
-# }
